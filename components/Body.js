@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { restaurantList } from "../contants";
 import RestaurantCard from "./RestaurantCard";
 
@@ -13,6 +13,21 @@ const Body = () => {
   const [searchText, setSearchText] = useState();
   const [restaurants, setRestaurants] = useState(restaurantList);
 
+  useEffect(() => {
+    //API CALL
+    getRestaurants();
+  }, []);
+
+  async function getRestaurants() {
+    const data = await fetch(
+      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING"
+    );
+
+    const json = await data.json();
+    console.log(json);
+    setRestaurants(json?.data?.cards[2]?.data?.data?.cards);
+  }
+
   return (
     <>
       <div className="search-container">
@@ -20,7 +35,7 @@ const Body = () => {
           type="text"
           className="search-input"
           placeholder="Search"
-          value={searchText}
+          // value={searchText}
           onChange={(e) => {
             setSearchText(e.target.value);
           }}
