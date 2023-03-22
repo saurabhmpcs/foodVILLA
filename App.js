@@ -11,8 +11,6 @@ const AppLayout = () => {
   return (
     <>
       <Header />
-      <Body />
-      <Footer />
     </>
   );
 };

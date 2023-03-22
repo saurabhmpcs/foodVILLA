@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
 import { restaurantList } from "../contants";
 import RestaurantCard from "./RestaurantCard";
+import Shimmer from "./Shimmer";
 
 function filterData(searchText, restaurants) {
   const filterData = restaurants.filter((restaurants) =>
-    restaurants.data.name.includes(searchText)
+    restaurants?.data?.name?.toLowerCase()?.includes(searchText.toLowerCase)
   );
   return filterData;
 }
 
 const Body = () => {
-  const [searchText, setSearchText] = useState();
-  const [restaurants, setRestaurants] = useState(restaurantList);
+  const [allRestaurants, setAllRestaurants] = useState([]);
+  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     //API CALL
@@ -25,10 +27,17 @@ const Body = () => {
 
     const json = await data.json();
     console.log(json);
-    setRestaurants(json?.data?.cards[2]?.data?.data?.cards);
+    setAllRestaurants(json?.data?.cards[2]?.data?.data?.cards);
+    setFilteredRestaurants(json?.data?.cards[2]?.data?.data?.cards);
   }
 
-  return (
+  if (!allRestaurants) return null;
+
+  if (filteredRestaurants?.length === 0) return <h1>No restaurant found</h1>;
+
+  return allRestaurants.length === 0 ? (
+    <Shimmer />
+  ) : (
     <>
       <div className="search-container">
         <input
@@ -43,8 +52,9 @@ const Body = () => {
         <button
           className="search-btn"
           onClick={() => {
-            const data = filterData(searchText, restaurants);
-            setRestaurants(data);
+            const data = filterData(searchText, allRestaurants);
+            //Update the state restaurant
+            setFilteredRestaurants(data);
           }}
         >
           Search
@@ -52,7 +62,7 @@ const Body = () => {
       </div>
 
       <div className="restaurant-list">
-        {restaurants.map((restaurant) => {
+        {filteredRestaurants.map((restaurant) => {
           return (
             <RestaurantCard {...restaurant.data} key={restaurant.data.id} />
           );
