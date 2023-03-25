@@ -1,20 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import useRestaurant from "../utils/useRestaurant";
 
 const RestaurantMenu = () => {
-  const { id } = useParams();
-  const [restaurant, setRestaurant] = useState({});
+  const { resId } = useParams();
+  // const [restaurant, setRestaurant] = useState({});
 
-  useEffect(() => {
-    getRestaurantInfo;
-  }, []);
-
-  async function getRestaurantInfo() {
-    const data = await fetch("");
-    const json = await data.json();
-    console.log(json);
-    setRestaurant(json.data);
-  }
+  const restaurant = useRestaurant(resId);
 
   return (
     <div>

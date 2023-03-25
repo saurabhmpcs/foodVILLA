@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Logo from "../assets/img/foodvilla.png";
 import { Link } from "react-router-dom";
+import useOnline from "../utils/useOnline";
 
 const loggedInUser = () => {
   return true;
