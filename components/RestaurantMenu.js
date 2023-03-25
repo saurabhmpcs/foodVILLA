@@ -10,7 +10,7 @@ const RestaurantMenu = () => {
   }, []);
 
   async function getRestaurantInfo() {
-    const data = fetch("");
+    const data = await fetch("");
     const json = await data.json();
     console.log(json);
     setRestaurant(json.data);
