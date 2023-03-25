@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 const RestaurantMenu = () => {
   const { id } = useParams();
-  const { restaurant, setRestaurant } = useState({});
+  const [restaurant, setRestaurant] = useState({});
 
   useEffect(() => {
     getRestaurantInfo;
@@ -13,12 +13,13 @@ const RestaurantMenu = () => {
     const data = fetch("");
     const json = await data.json();
     console.log(json);
+    setRestaurant(json.data);
   }
 
   return (
     <div>
       <h1>Restaurant id : {id}</h1>
-      <h1>Namaste</h1>
+      <h1>{restaurant.name}</h1>
     </div>
   );
 };
